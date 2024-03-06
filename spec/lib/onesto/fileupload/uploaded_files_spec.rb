@@ -3,7 +3,7 @@ require 'onesto/fileupload/uploaded_files'
 
 RSpec.describe Onesto::Fileupload::UploadedFiles do
   let(:test_class) { Class.new do
-    def self.after_filter(*args)
+    def self.after_action(*args)
     end
 
     include Onesto::Fileupload::UploadedFiles
@@ -21,12 +21,12 @@ RSpec.describe Onesto::Fileupload::UploadedFiles do
   let(:test_class_instance) { test_class.new }
 
   describe 'inclusion' do
-    it 'registers after_filter callback' do
+    it 'registers after_action callback' do
       a_class = Class.new do
-        def self.after_filter(*args)
+        def self.after_action(*args)
         end
       end
-      expect(a_class).to receive(:after_filter).with(:clear_uploaded_files, only: [:create, :update], if: :response_ok?)
+      expect(a_class).to receive(:after_action).with(:clear_uploaded_files, only: [:create, :update], if: :response_ok?)
       a_class.send(:include, Onesto::Fileupload::UploadedFiles)
     end
   end

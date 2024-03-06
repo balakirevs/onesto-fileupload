@@ -6,7 +6,7 @@ module Onesto
       extend ActiveSupport::Concern
 
       included do
-        after_filter :clear_uploaded_files, only: [:create, :update], if: :response_ok?
+        after_action :clear_uploaded_files, only: [:create, :update], if: :response_ok?
       end
 
       protected
