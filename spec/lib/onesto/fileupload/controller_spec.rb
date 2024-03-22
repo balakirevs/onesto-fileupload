@@ -25,16 +25,23 @@ RSpec.describe Onesto::Fileupload::Controller do
   end }
 
   let(:controller) { controller_class.new(file: sample_pdf_upload, id: '123') }
+  let(:controller_2) { controller_class.new(file: sample_pdf_file_rack_test, id: '123') }
 
   describe 'create' do
     it 'stores file' do
       expect(Onesto::Fileupload::Store).to receive(:add).with(1, kind_of(ActionDispatch::Http::UploadedFile))
       controller.send(:create)
+
+      expect(Onesto::Fileupload::Store).to receive(:add).with(1, kind_of(Rack::Test::UploadedFile))
+      controller_2.send(:create)
     end
 
     it 'renders json with stored file hash' do
       expect(controller).to receive(:render).with(json: kind_of(Hash), status: :created)
       controller.send(:create)
+
+      expect(controller_2).to receive(:render).with(json: kind_of(Hash), status: :created)
+      controller_2.send(:create)
     end
   end
 end

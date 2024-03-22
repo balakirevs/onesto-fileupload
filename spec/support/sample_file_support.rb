@@ -14,6 +14,15 @@ module SampleFileSupport
     )
   end
 
+  def sample_pdf_file_rack_test
+    Rack::Test::UploadedFile.new(
+      sample_pdf_tmpfile.path,
+      'application/pdf',
+      true,
+      original_filename: 'sample.pdf'
+    )
+  end
+
   def sample_pdf_tmpfile
     tmpfile = Tempfile.new("sample.pdf")
     tmpfile.binmode
