@@ -33,9 +33,11 @@ RSpec.describe Onesto::Fileupload::UploadedFiles do
 
   describe 'uploaded_file' do
     it 'fetches file from store' do
-      file = Onesto::Fileupload::Store.add(1, sample_pdf_upload)
-      stored_file = Onesto::Fileupload::Store.fetch(1, file[:id])
-      expect(test_class_instance.send(:uploaded_file, file)).to be(stored_file)
+      [sample_pdf_upload, sample_pdf_file_rack_test].each do |sample_file|
+        file = Onesto::Fileupload::Store.add(1, sample_file)
+        stored_file = Onesto::Fileupload::Store.fetch(1, file[:id])
+        expect(test_class_instance.send(:uploaded_file, file)).to be(stored_file)
+      end
     end
   end
 
