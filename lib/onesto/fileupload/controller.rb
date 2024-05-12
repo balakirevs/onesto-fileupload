@@ -23,6 +23,7 @@ module Onesto
       end
 
       def render_response(status)
+        file = permitted_params[:file].to_h
         if defined?(ActionDispatch::Http::UploadedFile) && file.is_a?(ActionDispatch::Http::UploadedFile)
           render nothing: true, status: status
         elsif defined?(Rack::Test::UploadedFile) && file.is_a?(Rack::Test::UploadedFile)
