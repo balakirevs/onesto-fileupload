@@ -11,15 +11,23 @@ module Onesto
       def destroy
         if Store.fetch(current_user.id, permitted_params[:id])
           Store.remove(current_user.id, permitted_params[:id])
-          render nothing: true, status: :no_content
+          render_response(:no_content)
         else
-          render nothing: true, status: :not_found
+          render_response(:not_found)
         end
       end
 
       private
       def permitted_params
         params.permit(:file, :id)
+      end
+
+      def render_response(status)
+        if defined?(ActionDispatch::Http::UploadedFile) && file.is_a?(ActionDispatch::Http::UploadedFile)
+          render nothing: true, status: status
+        elsif defined?(Rack::Test::UploadedFile) && file.is_a?(Rack::Test::UploadedFile)
+          render body: nil, status: status
+        end
       end
     end
   end

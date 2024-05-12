@@ -44,4 +44,19 @@ RSpec.describe Onesto::Fileupload::Controller do
       controller_2.send(:create)
     end
   end
+
+  describe 'destroy' do
+    it 'removes file' do
+      expect(Onesto::Fileupload::Store).to receive(:fetch).with(1, '123').and_return(true)
+      expect(Onesto::Fileupload::Store).to receive(:remove).with(1, '123')
+      expect(controller).to receive(:render_response).with(:no_content)
+      controller.send(:destroy)
+    end
+
+    it 'renders not found' do
+      expect(Onesto::Fileupload::Store).to receive(:fetch).with(1, '123').and_return(false)
+      expect(controller).to receive(:render_response).with(:not_found)
+      controller.send(:destroy)
+    end
+  end
 end
